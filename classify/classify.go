@@ -148,8 +148,8 @@ func (imgProc ImageClassifier) ProcessURLFile(fname string) {
 	}
 }
 
-var inputFile = flag.String("in", "../images.txt", "Input file containing urls")
-var outputFile = flag.String("out", "../cache.json", "file with classification results")
+var inputFile = flag.String("in", "../data/images.txt", "Input file containing urls")
+var outputFile = flag.String("out", "../data/cache.json", "file with classification results")
 
 func main() {
 	flag.Parse()

@@ -7,7 +7,7 @@ Design and implement an MVP that will:
 # Solution: MVP level-1
 The solution is implemented as three services, that could be run as separate processes on multiple machines, or within a single process.
 
-![mvp1](./mvp1.png)
+![mvp1](img/mvp1.png)
 
 1. Image tagging service
 2. Search service
@@ -40,7 +40,7 @@ term -> [
 A web interface allows users to enter a term to search for. The term is looked up against the corcodance to return matching results.
 
 ### Output
-![sample results](./results.png)
+![sample results](img/results.png)
 
 # Solution: MVP-2
 
@@ -62,7 +62,7 @@ Using matrix math on GPUs, the distance calculations can be batched, returning s
 
 The three services could be split up to run as distributed services on multiple servers.
 
-![mvp2](./mvp2.png)
+![mvp2](img/mvp2.png)
 
 Map-reduce could be used to aggregate results from multiple servers.
 

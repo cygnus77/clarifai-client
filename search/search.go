@@ -80,7 +80,7 @@ func searchImages(concordance Dict, term string) Matches {
 
 // Port argument - default 80 : ana_d
 var port = flag.Int("port", 80, "http service port")
-var inputFile = flag.String("in", "../cache.json", "Cache file to use")
+var inputFile = flag.String("in", "../data/cache.json", "Cache file to use")
 
 func main() {
 
