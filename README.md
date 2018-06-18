@@ -60,7 +60,19 @@ In this implementation, I used GloVe (Global Vectors for Word Representation) to
 
 ### MVP-2 Output
 
+Searching for "organ" returns "piano", "instrument", "violin", "flute", "flute", "pipe", "cello", "guitar" and "orchestra",
+
+![GloVe output](img/results3.png)
+
+Searching for "dessert" returns results like "delicious", "appetizer", "cake", "chocolate", "dish" and "pudding". 
+
+![GloVe output](img/results4.png)
+
+
+Searching for "dwelling" pulls up results like "bungalow", "farmhouse", "bedroom", "porch" and "rustic". 
+
 ![GloVe output](img/results2.png)
+
 
 ### Algorightm
 
