@@ -105,7 +105,7 @@ Map-reduce could be used to aggregate results from multiple servers.
 
 Publish-subscribe could be used to keep the services updated when new data becomes available.
 
-# Steps to run
+# Installation and Usage
 Pre-requisites
 - Install [golang](https://golang.org/) version 1.10.3
 - Install tensor package
