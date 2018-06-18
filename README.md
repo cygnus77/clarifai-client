@@ -44,19 +44,56 @@ A web interface allows users to enter a term to search for. The term is looked u
 
 # Solution: MVP-2
 
-### Biggest limitation of MVP-1
-Searching is limited to exact string matching of search terms. For example, a search for 'feline' would not retrieve results of cats.
+### Limitation of MVP-1
+Searching is limited to exact string matching of search terms. For example, a search for 'dwelling' would not retrieve results of houses.
 
 ### Word embeddings
-Instead of matching terms exactly, we can convert classification results into word embeddings (vector of numbers, say 512 long) using libraries like word2vec.
+Instead of matching terms exactly, we can convert classification results into word embeddings (vector of numbers, say 100 long) using libraries like word2vec.
 User's search term too is mapped to a work embedding.
 
 Word embeddings in the cache within a certain 'distance' of the search term's embedding would give us better results.
 
-This would work even if the exact search term is not present in the cache.
-For example: 'canine' and 'bovine' would pull up all results of 'dog' and 'cow' respectively.
+This works even if the exact search term is not present in the cache.
+For example: searching for 'dwelling' would pull up 'bungalow', 'farmhouse', etc.
 
-Using matrix math on GPUs, the distance calculations can be batched, returning sub-second results.
+In this implementation, I used GloVe (Global Vectors for Word Representation) to measure word similarity.
+
+### MVP-2 Output
+
+![GloVe output](img/results2.png)
+
+### Algorightm
+
+Refer to search2/wordsim.go.
+
+It is an adaptataion of code from https://github.com/ynqa/word-embedding
+
+- Load word vectors from disk into memory
+  ``` 
+  corpus := map[word] -> tensor
+  ```
+- Extract vectors for tag-words in cache (from concordance)
+  ```
+  index := intersection(corpus & tags)
+  ```
+- For each search term, find its tensor from corpus
+  ```
+  target-tensor := corpus[term]
+  ```
+- Measure distance to each word in index using cosine measure - [Pearson Correlation Coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)
+  ```
+  distance := pearson_coeff(target-tensor, index-tensor)
+  ```
+- Sort words by distance and return top 10
+
+## Future improvements
+
+### Improved word embeddings
+
+- Choose better corpus and tune word vector length
+- Select better distance measure for word vectors
+
+- Using matrix math on GPUs, the distance calculations can be batched, returning sub-second results.
 
 ### Scaling up
 
@@ -71,18 +108,32 @@ Publish-subscribe could be used to keep the services updated when new data becom
 # Steps to run
 Pre-requisites
 - Install [golang](https://golang.org/) version 1.10.3
+- Install tensor package
+  ``` 
+   go get -u "github.com/chewxy/gorgonia/tensor"
+   ```
+- Download [pre-trained word vectors](http://nlp.stanford.edu/data/glove.6B.zip) of Wikipedia 2014 + Gigaword 5 dataset from the Stanford (GloVe project page)[https://nlp.stanford.edu/projects/glove/].
+- Extract zip file to ./glove folder
 
-**Executing Search**
+**Executing Search (MPV-1)**
 
 From terminal, run
 
  ```
- go run search.go
+ go run search/search.go -in ../data/cache.json
  ```
 
 _Note: use argument -port nnnn to change default port (default: 80)_
 
 Open browser to http://localhost/ and enter  a search term to view results.
+
+**Executing Search (MPV-2)**
+
+From terminal, run
+
+ ```
+ go run search/search.go -in ../data/cache.json -glove ../glove/glove.6B.300d.txt
+ ```
 
 **Running classification**
 
@@ -91,5 +142,5 @@ This step is necessary to recreate classification results file on disk.
 From terminal, run
 
  ```
- go run classify.go -in ./images.txt -out ./cache.json
+ go run classify/classify.go -in ../data/images.txt -out ../data/cache.json
  ```
