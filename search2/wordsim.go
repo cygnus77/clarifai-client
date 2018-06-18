@@ -55,7 +55,6 @@ func (sw SimilarWords) GetSimilarWords(target string) ([]string, error) {
 
 	tvec, ok := sw.corpus[target]
 	if !ok {
-		log.Fatalf("%v is not found", target)
 		return nil, errors.New("word not found")
 	}
 
